@@ -55,40 +55,40 @@ const particlesOptions = {
                 detectRetina: true,
             };
 
-// const USER_ID = 'silva';
-// // Your PAT (Personal Access Token) can be found in the portal under Authentification
-// const PAT = '7378de56a36c4c0e86ee95835d4a5633';
-// const APP_ID = 'my-first-application';
-// // Change these to whatever model and image URL you want to use
-// const MODEL_ID = 'face-detection';
-// const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';    
-// const IMAGE_URL = 'https://samples.clarifai.com/metro-north.jpg';
+const USER_ID = 'silva';
+// Your PAT (Personal Access Token) can be found in the portal under Authentification
+const PAT = '7378de56a36c4c0e86ee95835d4a5633';
+const APP_ID = 'my-first-application';
+// Change these to whatever model and image URL you want to use
+const MODEL_ID = 'face-detection';
+const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';    
+const IMAGE_URL = 'https://samples.clarifai.com/metro-north.jpg';
 
 
-// const raw = JSON.stringify({
-//         "user_app_id": {
-//             "user_id": USER_ID,
-//             "app_id": APP_ID
-//         },
-//         "inputs": [
-//             {
-//                 "data": {
-//                     "image": {
-//                         "url": IMAGE_URL
-//                     }
-//                 }
-//             }
-//         ]
-//     });
+const raw = JSON.stringify({
+        "user_app_id": {
+            "user_id": USER_ID,
+            "app_id": APP_ID
+        },
+        "inputs": [
+            {
+                "data": {
+                    "image": {
+                        "url": IMAGE_URL
+                    }
+                }
+            }
+        ]
+    });
 
-//     const requestOptions = {
-//         method: 'POST',
-//         headers: {
-//             'Accept': 'application/json',
-//             'Authorization': 'Key ' + PAT
-//         },
-//         body: raw
-//     };
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Key ' + PAT
+        },
+        body: raw
+    };
 
 
 
@@ -112,7 +112,7 @@ const initialState = {
 
 function App() {
   const particlesInit = useCallback(async (engine) => {
-        // console.log(engine);
+        console.log(engine);
         // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
         // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
         // starting from v2 you can add only the features you need reducing the bundle size
@@ -120,7 +120,7 @@ function App() {
     }, []);
 
     const particlesLoaded = useCallback(async (container) => {
-        // await console.log(container);
+        await console.log(container);
     }, []);
 
 
@@ -142,13 +142,12 @@ function App() {
 
 
     const [
-    { input, imageURL, box, route, isSignedIn, user },
+    m,
     setState
     ] = useState(initialState);
 
     const clearState = () => {
     setState({ ...initialState });
-    // setState(initialState); //this will give the same result 
     };
 
 
@@ -189,7 +188,7 @@ function App() {
       //   entries:entries,
       //   joined: joined
       // })
-      // console.log(user);  
+      console.log(m.user);  
     }
 
 
@@ -211,7 +210,7 @@ function App() {
      }
 
      let displayFaceBox=(box)=>{
-      // console.log(box);
+      console.log(box);
       // setBox(box);
       setState((prevState) => ({ ...prevState, box: box }));
      }
@@ -228,57 +227,35 @@ function App() {
        // setImageUrl(input);
        setState((prevState) => ({ ...prevState, imageURL: prevState.input }));
 
-
-
-
-
-
-
-       // U
-       // |
-       // |
-       // |
-       // let raw2=requestOptions.body;
-       // let rawNJ=JSON.parse(raw2);
-       // rawNJ.inputs[0].data.image.url=input;
-       // const newRaw= JSON.stringify(rawNJ);
-       // requestOptions.body=newRaw;
+       let raw2=requestOptions.body;
+       let rawNJ=JSON.parse(raw2);
+       rawNJ.inputs[0].data.image.url=m.input;
+       const newRaw= JSON.stringify(rawNJ);
+       requestOptions.body=newRaw;
        // console.log(requestOptions.body);
-        // fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-        // |
-        // |
-        // |
-        // V
 
-        fetch('http://localhost:3001/image',{
-               method: 'post',
-               headers: {'Content-Type':'application/json'},
-               body: JSON.stringify({
-                input: input
-               })
-            })
-        .then(resp=>resp.json())//this is newly added
-         // to handle the response from our post image endpoint
+
+        fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
         // .then(response=> console.log(response))
+        .then(response => response.text())
         .then(result => {
         const parsedResult=JSON.parse(result);
         // let  boundingBoxResult=parsedResult.outputs[0].data.regions[0].region_info.bounding_box;
           // console.log(boundingBoxResult);
-        // console.log('dddd  ',parsedResult.status.code);
 
-        if(parsedResult  && parsedResult.status.code!==10020){
-            // console.log('dddd  ',user.id);
-            // console.log('dddd  ',parsedResult.status.code);
+
+        if(parsedResult){
+            console.log('dddd  ',m.user.id);
             fetch('http://localhost:3001/image',{
                method: 'put',
                headers: {'Content-Type':'application/json'},
                body: JSON.stringify({
-                id: user.id
+                id: m.user.id
                })
             })
             .then(resp => resp.json())
             .then(count =>{
-                // console.log('count-->',count);
+                console.log('count-->',count);
                 // setUser(Object.assign(user,{entries: count}));
                 // Object.assign(user,{entries: count});
                 // user.entries=count;
@@ -294,9 +271,8 @@ function App() {
 
 
 
-                // console.log('user.entries-->',user.entries);
-            })
-            .catch(console.log);
+                console.log('user.entries-->',m.user.entries);
+            });
         }
 
 
@@ -316,8 +292,7 @@ function App() {
             setState((prevState) => ({ ...prevState, isSignedIn: true }));
           // setIsSignedIn(true);
       else
-        clearState();
-        // setState((prevState) => ({ ...prevState, isSignedIn: false }));
+        setState((prevState) => ({ ...prevState, isSignedIn: false }));
         // setIsSignedIn(false);
 
         setState((prevState) => ({ ...prevState, route: route }));
@@ -333,19 +308,19 @@ function App() {
             loaded={particlesLoaded}
             options={particlesOptions}
         />
-      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn}/>
-      { route==='home'
+      <Navigation onRouteChange={onRouteChange} isSignedIn={m.isSignedIn}/>
+      { m.route==='home'
 
         ?<div>
           <Logo />
-          <Rank  name={user.name} entries={user.entries}/>
+          <Rank  name={m.user.name} entries={m.user.entries}/>
           <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit}/>
-          <FaceRecognition box={box} imageURL={imageURL} />
+          <FaceRecognition box={m.box} imageURL={m.imageURL} />
         </div>
         
         :(
 
-           route==='signIn'
+           m.route==='signIn'
            ?<SignIn onRouteChange={onRouteChange} loadUser={loadUser} />
            :<Register onRouteChange={onRouteChange} loadUser={loadUser} />
 

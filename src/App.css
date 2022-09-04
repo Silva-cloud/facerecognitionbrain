@@ -2,9 +2,17 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#tsparticles{
+  z-index: -1;
+}
+
+.center {
+  display: flex;
+justify-content: center;
+}
+
+button{
+  cursor: pointer;
 }
 
 @media (prefers-reduced-motion: no-preference) {
