@@ -24,7 +24,7 @@ const Register = ({onRouteChange,loadUser}) =>{
 	
 	const onSubmitSignIn= ()=>{
 
-		fetch('http://localhost:3001/register',{
+		fetch('https://infinite-peak-37942.herokuapp.com/register',{
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({

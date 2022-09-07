@@ -250,7 +250,7 @@ function App() {
         // |
         // V
 
-        fetch('http://localhost:3001/image',{
+        fetch('https://infinite-peak-37942.herokuapp.com/image',{
                method: 'post',
                headers: {'Content-Type':'application/json'},
                body: JSON.stringify({
@@ -269,7 +269,7 @@ function App() {
         if(parsedResult  && parsedResult.status.code!==10020){
             // console.log('dddd  ',user.id);
             // console.log('dddd  ',parsedResult.status.code);
-            fetch('http://localhost:3001/image',{
+            fetch('https://infinite-peak-37942.herokuapp.com/image',{
                method: 'put',
                headers: {'Content-Type':'application/json'},
                body: JSON.stringify({
