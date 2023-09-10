@@ -250,7 +250,7 @@ function App() {
         // |
         // V
 
-        fetch('https://infinite-peak-37942.herokuapp.com/image',{
+        fetch('https://facerecognitionbackend-dlll.onrender.com/image',{
                method: 'post',
                headers: {'Content-Type':'application/json'},
                body: JSON.stringify({
@@ -269,7 +269,7 @@ function App() {
         if(parsedResult  && parsedResult.status.code!==10020){
             // console.log('dddd  ',user.id);
             // console.log('dddd  ',parsedResult.status.code);
-            fetch('https://infinite-peak-37942.herokuapp.com/image',{
+            fetch('https://facerecognitionbackend-dlll.onrender.com/image',{
                method: 'put',
                headers: {'Content-Type':'application/json'},
                body: JSON.stringify({

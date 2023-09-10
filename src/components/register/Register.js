@@ -24,7 +24,7 @@ const Register = ({onRouteChange,loadUser}) =>{
 	
 	const onSubmitSignIn= ()=>{
 
-		fetch('https://infinite-peak-37942.herokuapp.com/register',{
+		fetch('https://facerecognitionbackend-dlll.onrender.com/register',{
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
